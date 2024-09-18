@@ -1,6 +1,6 @@
 a = [1, 17, 47, 67, 88]
 b = [3 , 12, 36, 59, 66]
-
+c = [ 3, 1234, 4, 1, 46]
 def merge_sort(arr1, arr2):
     i = 0
     j = 0
@@ -27,5 +27,15 @@ def merge_sort(arr1, arr2):
 
     return merged_arr
 
+def insert_arr(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+    return arr
 
 print(merge_sort(a, b))
+print(insert_arr(c))
