@@ -1,4 +1,5 @@
 import random
+
 def merge_sort_3way_iterative(arr):
     size = 1
     while size < len(arr):
@@ -34,7 +35,6 @@ def merge_3way(arr, start, mid1, mid2, end):
         if k < len(right):
             min_value = min(min_value, right[k])
 
-        # 최소값이 있는 배열의 값을 병합하고 인덱스 증가
         if i < len(left) and left[i] == min_value:
             arr[l] = left[i]
             i += 1

@@ -14,28 +14,27 @@ def merge_sort(arr):
 def merge(left_arr, right_arr):
     i, j = 0, 0                                            # i => left_arr index    j => right_arr index // p.s didn't named like left_arr_index because looks complicated
     merged_arr = []                                        # declare merged array
-    while i < len(left_arr) and j < len(right_arr):        # Do it until the merging of one array is complete // when one is complete then complete by just extending remaining array because it's sorted
 
-        # add the small one
-        if left_arr[i] < right_arr[j]:
+    while i < len(left_arr) and j < len(right_arr):        # Do it until the merging of one array is complete // when one is complete then complete by just extending remaining array because it's sorted
+        if left_arr[i] < right_arr[j]:                     # add the small one
             merged_arr.append(left_arr[i])
-            print(f"auxiliary space = {len(merged_arr)}\nmerged array = {merged_arr}")
             i += 1
         else:
             merged_arr.append(right_arr[j])
-            print(f"auxiliary space = {len(merged_arr)}\nmerged array = {merged_arr}")
             j += 1
+        print(f"auxiliary space = {len(merged_arr)}\nmerged array = {merged_arr}")
 
-    # just extending remaining sorted array
-    while i < len(left_arr):
+    while i < len(left_arr):                               # just extending remaining sorted array
         merged_arr.append(left_arr[i])
         print(f"auxiliary space = {len(merged_arr)}\nmerged array = {merged_arr}")
         i += 1
+
     while j < len(right_arr):
         merged_arr.append(right_arr[j])
         print(f"auxiliary space = {len(merged_arr)}\nmerged array = {merged_arr}")
         j += 1
+
     return merged_arr
 
-arr = [random.randint(0, 100) for _ in range(20)]
+arr = [random.randint(0, 100) for _ in range(10)]
 print(merge_sort(arr))

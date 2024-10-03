@@ -1,15 +1,12 @@
 import random
 import sys
-sys.setrecursionlimit(10000000)
 
 # 3-way 병합 정렬 함수
 def merge_sort_3way_recursive(arr):
-    # 배열의 길이가 1 이하이면 이미 정렬된 상태
     if len(arr) <= 1:
         return arr
 
-    # 배열을 세 부분으로 나눔
-    third_length = len(arr) // 3
+    third_length = len(arr) // 3 + 1
     left = arr[:third_length]
     middle = arr[third_length:2 * third_length]
     right = arr[2 * third_length:]
@@ -20,10 +17,10 @@ def merge_sort_3way_recursive(arr):
     right = merge_sort_3way_recursive(right)
 
     # 병합하여 결과 반환
-    return merge_3way_recursive(left, middle, right)
+    return merge_3way(left, middle, right)
 
 # 세 부분 배열을 병합하는 함수
-def merge_3way_recursive(left, middle, right):
+def merge_3way(left, middle, right):
     merged = []
     i = j = k = 0
 

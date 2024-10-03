@@ -1,56 +1,67 @@
 import random
 
+#### At first, I implemented it recursively. But I realized that the recursion technique can have a maximum recursion depth error issue. (Although it's unlikely to happen in "simple tasks")
+#### So I also implemented it iteratively. => Process of understanding the logic was quite difficult, but it was still quite interesting.
 
-def merge_sort_iterative(arr):
-    # 병합할 부분 배열의 크기. 1부터 시작하여 2배씩 증가
+def merge_sort_3way_iterative(arr):
     size = 1
     while size < len(arr):
-        # 배열을 순회하면서 인접한 부분 배열들을 병합
-        for start in range(0, len(arr), size * 2):
-            mid = start + size
-            end = min(start + size * 2, len(arr))
-            # 두 부분 배열(start to mid, mid to end)을 병합
-            merge(arr, start, mid, end)
-        # 다음 반복에서는 두 배 크기의 부분 배열을 병합
-        size *= 2
+        for start in range(0, len(arr), size * 3):
+            left_arr = arr[start:start + size]
+            middle_arr = arr[start + size : start + (size * 2)]
+            right_arr = arr[start + (size * 2) : start + (size * 3)]
+            arr[start : start + (size * 3)] = merge_3way(left_arr, middle_arr, right_arr)
+        size *= 3
     return arr
-dd
 
-def merge(arr, start, mid, end):
-    # 두 부분 배열을 임시로 저장
-    left = arr[start:mid]
-    right = arr[mid:end]
+def merge_sort_3way_recursive(arr):
+    if len(arr) <= 1:
+        return arr
 
-    i, j, k = 0, 0, start
-    # 두 부분 배열의 원소를 비교하여 원래 배열에 정렬된 순서로 병합
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            arr[k] = left[i]
+    # slice an array in three pieces
+    third_length = len(arr) // 3 + 1   # why not len(arr) // 3 ? => This code informed me that it could potentially cause a recursion error. I overlooked the fact that in slicing, the right column index is exclusive.
+    left = arr[:third_length]
+    middle = arr[third_length:2 * third_length]
+    right = arr[2 * third_length:]
+
+    # sorting the arrays
+    left = merge_sort_3way_recursive(left)
+    middle = merge_sort_3way_recursive(middle)
+    right = merge_sort_3way_recursive(right)
+
+    return merge_3way(left, middle, right)
+
+def merge_3way(arr1, arr2, arr3):
+    i, j, k = 0, 0, 0                                                       # i = left array index, j = right array index, k = middle array index
+    merged_arr = []
+
+    while i < len(arr1) or j < len(arr2) or k < len(arr3):                  # Besides the two-way merge, "or" was the key.
+        min_value = float('inf')                                            # finding the minimum value of three value
+
+        if i < len(arr1):
+            min_value = min(min_value, arr1[i])
+
+        if j < len(arr2):
+            min_value = min(min_value, arr2[j])
+
+        if k < len(arr3):
+            min_value = min(min_value, arr3[k])
+
+        if i < len(arr1) and arr1[i] == min_value:                          # if index is lower than the length of array & if that is a min_value
+            merged_arr.append(arr1[i])                                      # append it
             i += 1
-        else:
-            arr[k] = right[j]
+        elif j < len(arr2) and arr2[j] == min_value:
+            merged_arr.append(arr2[j])
             j += 1
-        k += 1
+        else:
+            merged_arr.append(arr3[k])
+            k += 1
 
-    # 남은 원소들을 배열에 추가
-    while i < len(left):
-        arr[k] = left[i]
-        i += 1
-        k += 1
-    while j < len(right):
-        arr[k] = right[j]
-        j += 1
-        k += 1
+    return merged_arr
 
-def three_way_merge_sort(arr):
-    i = j = k = 0                                           # i = left array index, j = right array index, k = middle array index
-    left_arr = merge_sort_iterative(arr[:len(arr)//3])
-    right_arr = merge_sort_iterative(arr[(len(arr)//3) * 2:])
-    middle_arr = merge_sort_iterative(arr[len(arr)//3 : (len(arr)//3) * 2])
-    left_middle_arr =  merge_sort_iterative(left_arr + middle_arr)
-    left_middle_right_merged_arr = merge_sort_iterative(left_middle_arr + right_arr)
-    return left_middle_right_merged_arr
 
 arr = [random.randint(0, 100) for _ in range(20)]
-print(arr)
-print(three_way_merge_sort(arr))
+print(f"""
+target random generated array : {arr}
+3 way merge iterative version : {merge_sort_3way_iterative(arr)}
+3 way merge recursive version : {merge_sort_3way_recursive(arr)}""")
