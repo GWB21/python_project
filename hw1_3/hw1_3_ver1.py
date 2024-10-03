@@ -1,33 +1,30 @@
-def max_heapify(arr, n, i):
-    largest = i  # 부모 노드의 인덱스
-    left = 2 * i + 1  # 왼쪽 자식 노드의 인덱스
-    right = 2 * i + 2  # 오른쪽 자식 노드의 인덱스
+def max_heapify_subtree(arr, target_node_index, array_length):
+    array_length = len(arr)
+    largest_i = target_node_index        # parent node of subtree
+    left_i = 2 * target_node_index + 1   # left child node index
+    right_i = 2 * target_node_index + 2  # right child node index
 
-    # 왼쪽 자식이 존재하고, 부모보다 큰 경우
-    if left < n and arr[left] > arr[largest]:
-        largest = left
+    if left_i < array_length and arr[left_i] > arr[largest_i]:                           # if left child exists & have a larger value than current largest node
+        largest_i = left_i                                                               # assign the left as the largest node
 
-    # 오른쪽 자식이 존재하고, 가장 큰 노드보다 큰 경우
-    if right < n and arr[right] > arr[largest]:
-        largest = right
+    if right_i < array_length and arr[right_i] > arr[largest_i]:                         # The same applies to the right node
+        largest_i = right_i
 
-    # 부모 노드가 자식보다 작은 경우, 값을 교환하고 재귀적으로 호출
-    if largest != i:
-        arr[i], arr[largest] = arr[largest], arr[i]  # swap
-        max_heapify(arr, n, largest)
+    if largest_i != target_node_index:                                                   # if the target node isn't the largest node, then swap it
+        arr[target_node_index], arr[largest_i] = arr[largest_i], arr[target_node_index]  # swap
+        max_heapify_subtree(arr, largest_i, array_length)                                # after swap, max-heapify the subtree of the swapped node
 
-# 주어진 배열을 max-heap으로 변환하는 함수
-def build_max_heap(arr):
-    n = len(arr)
+def change_to_max_heap(arr):
+    array_length = len(arr)
+    last_parent_node_index = array_length // 2 - 1
 
-    # 마지막 부모 노드부터 시작해서 힙 속성을 재정립
-    for i in range(n // 2 - 1, -1, -1):
-        max_heapify(arr, n, i)
+    for last_parent_node_index in range(last_parent_node_index, -1, -1):                 #Perform a bottom-up max-heapify process, starting from the last parent node to the root node.
+        max_heapify_subtree(arr, last_parent_node_index, array_length)
 
-# 예시 배열
+    return arr
+
+
 arr = [1, 2, 3, 4, 5, 6, 7]
-print("변환 전 배열:", arr)
-
-# max-heapify 적용
-build_max_heap(arr)
-print("max-heapify 이후 배열:", arr)
+print(f"""
+before max-heapify : {arr}
+ after max-heapify : {change_to_max_heap(arr)}""")
