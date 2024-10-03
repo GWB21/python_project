@@ -14,7 +14,7 @@ def merge_sort_iterative(arr):
         # 다음 반복에서는 두 배 크기의 부분 배열을 병합
         size *= 2
     return arr
-
+dd
 
 def merge(arr, start, mid, end):
     # 두 부분 배열을 임시로 저장
