@@ -22,8 +22,22 @@ def change_to_max_heap(arr):
 
     return arr
 
+def max_heap_sort (arr):
+    sorted_by_descending_order_array = []
+    max_heap = change_to_max_heap(arr.copy())                                              # object reference (very interesting)
 
-arr = [1, 2, 3, 4, 5, 6, 7]
+    while max_heap:                                                                        # do it until the length of array is 0 (big impressed by the "truthy" concept )
+        max_heap[0], max_heap[-1] = max_heap[-1], max_heap[0]                              # swap the largest one and last leaf node
+        sorted_by_descending_order_array.append(max_heap.pop(-1))                          # pop the last leaf node (that have the largest value among the entire array)
+        max_heapify_subtree(max_heap, 0)                                   # after pop re-max-heapify
+
+    return sorted_by_descending_order_array                                                # return the result
+
+arr = [random.randint(0,100) for _ in range(20)]
+arr_for_check = sorted(arr, reverse = True)
+
 print(f"""
-before max-heapify : {arr}
- after max-heapify : {change_to_max_heap(arr)}""")
+before sort         : {arr}
+ after sort         : {max_heap_sort(arr)}
+**** To check for correctness
+sort func in python : {arr_for_check}""")
